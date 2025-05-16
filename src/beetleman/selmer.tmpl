@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>List</h1>
+    <form action="/selmer" method="post">
+      <div>
+        <label for="name">Enter name:</label>
+        <input name="name" type="text" />
+      </div>
+      <div>
+        <label for="color">Enter color:</label>
+        <input name="color" type="color" />
+      </div>
+      <div>
+        <label for="image">Enter image:</label>
+        <input name="image" type="text" />
+      </div>
+      <input type="submit" value="Send Request" />
+    </form>
+    {% for itm in itms %}
+    <p style="color: {{ itm.color }};">
+      <img src="{{ itm.image }}" />{{ itm.name }}
+    </p>
+    {% endfor %}
+  </body>
+</html>
