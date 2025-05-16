@@ -9,14 +9,13 @@
    [clojure.java.io :as io]))
 
 (defstate db
-  :start (atom {::hiccup []
-                ::selmer []}))
+  :start (atom {}))
 
 (defn add-itm [type name color image]
   (let [itm {:name  name
              :color color
              :image image}]
-    (get (swap! db update type conj itm) type)))
+    (get (swap! db update type (fnil conj []) itm) type)))
 
 (defn all-itm [type]
   (get @db type))
@@ -68,5 +67,15 @@
                                 :legacy-return-value? false})
   :stop (hk-server/server-stop! server))
 
-(comment
+(defn -main [& _args]
+  (.addShutdownHook (Runtime/getRuntime)
+                    (Thread. (fn []
+                               (mount/stop)
+                               (shutdown-agents)
+                               (println "Stop"))))
+  (println "Start")
   (mount/start))
+
+(comment
+  (mount/start)
+  (mount/stop))
