@@ -1,12 +1,64 @@
 (ns beetleman.clj-html-fuzz
-  "FIXME: my new org.corfield.new/scratch project.")
+  (:require
+   [compojure.core :refer [context defroutes GET POST]]
+   [hiccup2.core :as h]
+   [mount.core :as mount :refer [defstate]]
+   [org.httpkit.server :as hk-server]
+   [ring.middleware.params :refer [wrap-params]]))
 
-(defn exec
-  "Invoke me with clojure -X beetleman.clj-html-fuzz/exec"
-  [opts]
-  (println "exec with" opts))
+(defstate db
+  :start (atom {::hiccup []
+                ::selmer []}))
 
-(defn -main
-  "Invoke me with clojure -M -m beetleman.clj-html-fuzz"
-  [& args]
-  (println "-main with" args))
+(defn add-itm [type name color image]
+  (let [itm {::name  name
+             ::color color
+             ::image image}]
+    (get (swap! db update type conj itm) type)))
+
+(defn all-itm [type]
+  (get @db type))
+
+(defn hiccup-list [itm-list]
+  (str (h/html [:html
+                [:body
+                 [:h1 "List"]
+                 [:form {:action "/hiccup" :method "post"}
+                  [:div
+                   [:label {:for "name"} "Enter name:"]
+                   [:input {:type "text" :name "name"}]]
+                  [:div
+                   [:label {:for "color"} "Enter color:"]
+                   [:input {:type "color" :name "color"}]]
+                  [:div
+                   [:label {:for "image"} "Enter image:"]
+                   [:input {:type "text" :name "image"}]]
+                  [:input {:type "submit" :value "Send Request"}]]
+                 (for [{::keys [name color image]} itm-list]
+                   [:p {:style (str "color:" color)}
+                    [:img {:src image}]
+                    name])]])))
+
+(defroutes app
+  (context "/hiccup" []
+    (POST "/" [name color image]
+      (-> (add-itm ::hiccup name color image)
+          (hiccup-list)))
+    (GET "/" []
+      (hiccup-list (all-itm ::hiccup)))))
+
+(defn logger [handler]
+  (fn [r]
+    (println r)
+    (handler r)))
+
+(defstate server
+  :start (hk-server/run-server (-> #'app
+                                   logger
+                                   wrap-params)
+                               {:port 8080
+                                :legacy-return-value? false})
+  :stop (hk-server/server-stop! server))
+
+(comment
+  (mount/start))
