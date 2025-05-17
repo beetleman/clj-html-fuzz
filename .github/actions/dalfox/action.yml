@@ -1,0 +1,49 @@
+name: Dalfox
+
+description: Starts the Clojure server and runs tests.
+
+inputs:
+  template-lib-name:
+    description: 'Name of the test to run'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Install clojure tools
+      uses: DeLaGuardo/setup-clojure@13.2
+      with:
+        cli: 'latest'
+        bb: 'latest'
+
+    - name: Install Dalfox
+      shell: bash
+      run: sudo snap install dalfox
+
+    - name: Cache clojure dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.gitlibs
+          ~/.deps.clj
+        key: cljdeps-${{ hashFiles('deps.edn') }}
+        restore-keys: cljdeps-
+
+    - name: Start server
+      shell: bash
+      run: nohup clojure -M:run &
+
+    - name: Wait for server to start
+      shell: bash
+      run: bb wait
+
+    - name: Run Tests
+      shell: bash
+      run: bb ${{ inputs.template-lib-name }}

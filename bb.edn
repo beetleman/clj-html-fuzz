@@ -1,0 +1,8 @@
+{:paths ["bb"]
+ :tasks
+ {:requires ([babashka.fs :as fs]
+             [babashka.wait :as wait]
+             [dalfox])
+  wait      (wait/wait-for-port "localhost" 8080 {:timeout 10000 :pause 1000})
+  selmer    (dalfox/run "selmer")
+  hiccup    (dalfox/run "hiccup")}}

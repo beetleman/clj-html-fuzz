@@ -47,6 +47,8 @@
                       {:itms itm-list}))
 
 (defroutes app
+  (GET "/health" []
+    "OK")
   (context "/hiccup" []
     (POST "/" [name color image]
       (-> (add-itm ::hiccup name color image)

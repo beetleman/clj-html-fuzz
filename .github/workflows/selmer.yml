@@ -1,0 +1,14 @@
+name: Selmer Tests
+
+on: [push]
+
+jobs:
+  test-selmer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Run Start Server Action
+        uses: ./.github/actions/dalfox
+        with:
+          template-lib-name: selmer
