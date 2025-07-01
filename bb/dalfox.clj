@@ -5,8 +5,8 @@
 (defn- -run [name]
   (some-> (process/shell {:out :string :err :string}
                          "dalfox" "-X" "POST" "url" (str "http://localhost:8080/" name)
-                         "--skip-discovery" "-p" "name" "-p" "color" "-p" "image"
                          "-S"
+                         "--deep-domxss"
                          "--format" "json")
           :out
           (json/decode keyword)))

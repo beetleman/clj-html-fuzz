@@ -17,10 +17,6 @@
       </div>
       <input type="submit" value="Send Request" />
     </form>
-    {% for itm in itms %}
-    <p style="color: {{ itm.color }};">
-      <img src="{{ itm.image }}" />{{ itm.name }}
-    </p>
-    {% endfor %}
+    <p style="color:{{ color }}"><img src="{{ image }}" />{{ name }}</p>
   </body>
 </html>

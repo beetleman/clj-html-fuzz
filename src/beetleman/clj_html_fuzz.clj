@@ -1,66 +1,57 @@
 (ns beetleman.clj-html-fuzz
   (:require
+   [clojure.java.io :as io]
    [compojure.core :refer [context defroutes GET POST]]
    [hiccup2.core :as h]
-   [selmer.parser :as selmer]
    [mount.core :as mount :refer [defstate]]
    [org.httpkit.server :as hk-server]
    [ring.middleware.params :refer [wrap-params]]
-   [clojure.java.io :as io]))
+   [selmer.parser :as selmer]))
 
-(defstate db
-  :start (atom {}))
+(defn hiccup-index
+  ([] (hiccup-index nil nil nil))
+  ([name color image]
+   (str (h/html
+         (h/raw "<!DOCTYPE html>")
+         [:html
+          [:body
+           [:h1 "List"]
+           [:form {:action "/hiccup" :method "post"}
+            [:div
+             [:label {:for "name"} "Enter name:"]
+             [:input {:type "text" :name "name"}]]
+            [:div
+             [:label {:for "color"} "Enter color:"]
+             [:input {:type "color" :name "color"}]]
+            [:div
+             [:label {:for "image"} "Enter image:"]
+             [:input {:type "text" :name "image"}]]
+            [:input {:type "submit" :value "Send Request"}]]
+           [:p {:style (str "color:" color)}
+            [:img {:src image}]
+            name]]]))))
 
-(defn add-itm [type name color image]
-  (let [itm {:name  name
-             :color color
-             :image image}]
-    (get (swap! db update type (fnil conj []) itm) type)))
-
-(defn all-itm [type]
-  (get @db type))
-
-(defn hiccup-list [itm-list]
-  (str (h/html
-        (h/raw "<!DOCTYPE html>")
-        [:html
-         [:body
-          [:h1 "List"]
-          [:form {:action "/hiccup" :method "post"}
-           [:div
-            [:label {:for "name"} "Enter name:"]
-            [:input {:type "text" :name "name"}]]
-           [:div
-            [:label {:for "color"} "Enter color:"]
-            [:input {:type "color" :name "color"}]]
-           [:div
-            [:label {:for "image"} "Enter image:"]
-            [:input {:type "text" :name "image"}]]
-           [:input {:type "submit" :value "Send Request"}]]
-          (for [{:keys [name color image]} itm-list]
-            [:p {:style (str "color:" color)}
-             [:img {:src image}]
-             name])]])))
-
-(defn selmer-list [itm-list]
-  (selmer/render-file (io/resource "beetleman/selmer.tmpl")
-                      {:itms itm-list}))
+(defn selmer-index
+  ([] (selmer-index nil nil nil))
+  ([name color image]
+   (selmer/render-file (io/resource "beetleman/selmer.tmpl")
+                       {:name  name
+                        :color color
+                        :image image})))
 
 (defroutes app
   (GET "/health" []
     "OK")
   (context "/hiccup" []
     (POST "/" [name color image]
-      (-> (add-itm ::hiccup name color image)
-          (hiccup-list)))
+      (hiccup-index name color image))
     (GET "/" []
-      (hiccup-list (all-itm ::hiccup))))
+      (hiccup-index)))
   (context "/selmer" []
     (POST "/" [name color image]
-      (-> (add-itm ::selmer name color image)
-          (selmer-list)))
+      (selmer-index name color image))
     (GET "/" []
-      (selmer-list (all-itm ::selmer)))))
+      (selmer-index))))
 
 (defstate server
   :start (hk-server/run-server (-> #'app
