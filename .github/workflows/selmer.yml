@@ -8,7 +8,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Run Start Server Action
+      - name: Test with dalfox
         uses: ./.github/actions/dalfox
+        with:
+          template-lib-name: selmer
+      - name: Clojure tests
+        uses: ./.github/actions/clojure-test
         with:
           template-lib-name: selmer

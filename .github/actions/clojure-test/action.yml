@@ -1,6 +1,6 @@
-name: Dalfox
+name: Test
 
-description: Starts the Clojure server and runs tests.
+description: Run clojure tests
 
 inputs:
   template-lib-name:
@@ -22,10 +22,6 @@ runs:
         cli: 'latest'
         bb: 'latest'
 
-    - name: Install Dalfox
-      shell: bash
-      run: sudo snap install dalfox
-
     - name: Cache clojure dependencies
       uses: actions/cache@v3
       with:
@@ -36,14 +32,6 @@ runs:
         key: cljdeps-${{ hashFiles('deps.edn') }}
         restore-keys: cljdeps-
 
-    - name: Start server
-      shell: bash
-      run: nohup bb server &
-
-    - name: Wait for server to start
-      shell: bash
-      run: bb wait
-
     - name: Run Tests
       shell: bash
-      run: bb dalfox:${{ inputs.template-lib-name }}
+      run: bb test:${{ inputs.template-lib-name }}

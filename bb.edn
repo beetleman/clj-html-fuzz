@@ -3,6 +3,10 @@
  {:requires ([babashka.fs :as fs]
              [babashka.wait :as wait]
              [dalfox])
-  wait      (wait/wait-for-port "localhost" 8080 {:timeout 10000 :pause 1000})
-  selmer    (dalfox/run "selmer")
-  hiccup    (dalfox/run "hiccup")}}
+
+  server        (clojure "-M:run")
+  wait          (wait/wait-for-port "localhost" 8080 {:timeout 10000 :pause 1000})
+  dalfox:selmer (dalfox/run "selmer")
+  dalfox:hiccup (dalfox/run "hiccup")
+  test:selmer   (clojure "-M:test" "--focus-meta" ":selmer")
+  test:hiccup   (clojure "-M:test" "--focus-meta" ":hiccup")}}
