@@ -1,11 +1,12 @@
 (ns beetleman.clj-html-fuzz-test
-  (:require [beetleman.clj-html-fuzz :as sut]
-            [clojure.test :as t :refer [deftest]]
-            [hickory.core :as h]
-            [matcher-combinators.test :refer [match?]]
-            [clojure.string :as str]
-            [clojure.walk :as walk]
-            [clojure.java.io :as io]))
+  (:require
+   [beetleman.clj-html-fuzz :as sut]
+   [clojure.java.io :as io]
+   [clojure.string :as str]
+   [clojure.test :as t :refer [deftest]]
+   [clojure.walk :as walk]
+   [hickory.core :as h]
+   [matcher-combinators.test :refer [match?]]))
 
 (let [l (delay (-> (io/resource "beetleman/clj_html_fuzz_payload.txt")
                    io/reader
@@ -17,11 +18,9 @@
   (walk/postwalk
    (fn [v]
      (cond
-       (sequential? v)
-       (into [] (remove #(and (string? %) (str/blank? %))) v)
-       (string? v)
-       (str/replace v  #"\n *"  "")
-       :else v))
+       (sequential? v) (into [] (remove #(and (string? %) (str/blank? %))) v)
+       (string? v)     (str/replace v  #"\n *"  "")
+       :else           v))
    data))
 
 (defn expected-hiccup [action name color image]
