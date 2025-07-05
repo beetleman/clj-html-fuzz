@@ -41,7 +41,7 @@
       [:img {:src string?}]
       string?]]]])
 
-(deftest selmer-test
+(deftest ^:selmer selmer-test
   (t/testing "injecting name"
     (doseq [name (payload)]
       (let [color "color"
@@ -73,7 +73,7 @@
                    h/as-hiccup
                    cleanup-hiccup)))))))
 
-(deftest hiccup-test
+(deftest ^:hiccup hiccup-test
   (t/testing "injecting name"
     (doseq [name (payload)]
       (let [color "color"
