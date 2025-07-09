@@ -10,18 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Prepare java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-
-    - name: Install clojure tools
-      uses: DeLaGuardo/setup-clojure@13.2
-      with:
-        cli: 'latest'
-        bb: 'latest'
-
+    - uses: jdx/mise-action@v2
     - name: Install Dalfox
       shell: bash
       run: sudo snap install dalfox
