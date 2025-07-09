@@ -1,4 +1,4 @@
-name: Hiccup Tests
+name: Hiccup dalfix tests
 
 on: [push]
 
@@ -10,9 +10,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Test with dalfox
         uses: ./.github/actions/dalfox
-        with:
-          template-lib-name: hiccup
-      - name: Clojure tests
-        uses: ./.github/actions/clojure-test
         with:
           template-lib-name: hiccup

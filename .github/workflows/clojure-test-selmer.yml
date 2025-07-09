@@ -1,4 +1,4 @@
-name: Selmer Tests
+name: Selmer clojure tests
 
 on: [push]
 
@@ -8,10 +8,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-      - name: Test with dalfox
-        uses: ./.github/actions/dalfox
-        with:
-          template-lib-name: selmer
       - name: Clojure tests
         uses: ./.github/actions/clojure-test
         with:
