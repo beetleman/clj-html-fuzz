@@ -4,13 +4,13 @@ description: Run clojure tests
 
 inputs:
   template-lib-name:
-    description: 'Name of the test to run'
+    description: "Name of the test to run"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - uses: jdx/mise-action@v2  
+    - uses: jdx/mise-action@v2
     - name: Cache clojure dependencies
       uses: actions/cache@v3
       with:
