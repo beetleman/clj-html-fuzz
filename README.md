@@ -1,6 +1,9 @@
+<!-- Local Variables: -->
+<!-- truncate-lines: t -->
+<!-- End: -->
 # XSS
 
-| template system | XSS tests results                                                                                                                                                                         |
-|:---------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| selmer          | [![Selmer Tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/selmer.yml/badge.svg)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/selmer.yml)             |
-| hiccup          | [![Hiccup Tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/hiccup.yml/badge.svg?branch=main)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/hiccup.yml) |
+| template system                                 | org.clj-commons/hickory                                                                                                                                                                                         | dalfox                                                                                                                                                                                             |
+|:-----------------------------------------------:|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| [selmer](https://github.com/yogthos/Selmer)     | [![Selmer clojure tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/clojure-test-selmer.yml/badge.svg)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/clojure-test-selmer.yml) | [![Selmer dalfox tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/dalfox-selmer.yml/badge.svg)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/dalfox-selmer.yml) |
+| [hiccup](https://github.com/weavejester/hiccup) | [![Hiccup clojure tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/clojure-test-hiccup.yml/badge.svg)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/clojure-test-hiccup.yml) | [![Hiccup dalfix tests](https://github.com/beetleman/clj-html-fuzz/actions/workflows/dalfox-hiccup.yml/badge.svg)](https://github.com/beetleman/clj-html-fuzz/actions/workflows/dalfox-hiccup.yml) |
