@@ -53,6 +53,7 @@
     (GET "/" []
       (selmer-index))))
 
+#_{:clojure-lsp/ignore [:clojure-lsp/unused-public-var]}
 (defstate server
   :start (hk-server/run-server (-> #'app
                                    wrap-params)

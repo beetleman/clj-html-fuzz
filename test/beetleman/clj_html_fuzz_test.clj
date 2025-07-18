@@ -23,7 +23,7 @@
        :else           v))
    data))
 
-(defn expected-hiccup [action name color image]
+(defn expected-hiccup [action]
   ["<!DOCTYPE html>"
    [:html
     {}
@@ -47,7 +47,7 @@
       (let [color "color"
             image "image"]
         (t/is (match?
-               (expected-hiccup "/selmer" name color image)
+               (expected-hiccup "/selmer")
                (-> (sut/selmer-index name color image)
                    h/parse
                    h/as-hiccup
@@ -57,7 +57,7 @@
       (let [name  "name"
             image "image"]
         (t/is (match?
-               (expected-hiccup "/selmer" name color image)
+               (expected-hiccup "/selmer")
                (-> (sut/selmer-index name color image)
                    h/parse
                    h/as-hiccup
@@ -67,7 +67,7 @@
       (let [color "color"
             name  "name"]
         (t/is (match?
-               (expected-hiccup "/selmer" name color image)
+               (expected-hiccup "/selmer")
                (-> (sut/selmer-index name color image)
                    h/parse
                    h/as-hiccup
@@ -79,7 +79,7 @@
       (let [color "color"
             image "image"]
         (t/is (match?
-               (expected-hiccup "/hiccup" name color image)
+               (expected-hiccup "/hiccup")
                (-> (sut/hiccup-index name color image)
                    h/parse
                    h/as-hiccup
@@ -89,7 +89,7 @@
       (let [name  "name"
             image "image"]
         (t/is (match?
-               (expected-hiccup "/hiccup" name color image)
+               (expected-hiccup "/hiccup")
                (-> (sut/hiccup-index name color image)
                    h/parse
                    h/as-hiccup
@@ -99,7 +99,7 @@
       (let [color "color"
             name  "name"]
         (t/is (match?
-               (expected-hiccup "/hiccup" name color image)
+               (expected-hiccup "/hiccup")
                (-> (sut/hiccup-index name color image)
                    h/parse
                    h/as-hiccup
